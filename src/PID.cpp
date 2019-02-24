@@ -1,30 +1,22 @@
 #include "PID.h"
 
-/**
- * TODO: Complete the PID class. You may add any additional desired functions.
- */
+PID::PID(const std::vector<float>& params)
+    : Kp_(params[0]),
+      Kd_(params[1]),
+      Ki_(params[2]),
+      i_error_(0.0),
+      d_error_(0.0) {}
 
-PID::PID() {}
+double PID::UpdateError(double cte) {
+  i_error_ += cte;
+  d_error_ = cte - p_error_;
+  p_error_ = cte;
 
-PID::~PID() {}
-
-void PID::Init(double Kp_, double Ki_, double Kd_) {
-  /**
-   * TODO: Initialize PID coefficients (and errors, if needed)
-   */
-
+  return Kp_ * p_error_ + Ki_ * i_error_ + Kd_ * d_error_;
 }
 
-void PID::UpdateError(double cte) {
-  /**
-   * TODO: Update PID errors based on cte.
-   */
-
-}
-
-double PID::TotalError() {
-  /**
-   * TODO: Calculate and return the total error
-   */
-  return 0.0;  // TODO: Add your total error calc here!
+void PID::UpdateGains(const std::vector<float>& params) {
+  Kp_ = params[0];
+  Kd_ = params[1];
+  Ki_ = params[2];
 }
